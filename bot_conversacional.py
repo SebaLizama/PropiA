@@ -256,78 +256,77 @@ async def on_message(message):
 
     channel_id = message.channel.id
 
-# ========================================================
-# RESET
-# ========================================================
+    # ========================================================
+    # RESET
+    # ========================================================
 
-if content.lower() == "$reset":
-    reset_history(channel_id)
+    if content.lower() == "$reset":
+        reset_history(channel_id)
 
-    await message.channel.send(
-        "Listo. He reiniciado el contexto de esta conversación. "
-        "Podemos comenzar nuevamente."
-    )
-    return
-
-# ========================================================
-# HELLO
-# ========================================================
-
-if content.lower() == "$hello":
-    await message.channel.send(
-        "¡Hola! 👋 Soy PropiA, tu asistente de inversión inmobiliaria "
-        "en Chile. ¿En qué te puedo ayudar?"
-    )
-    return
-
-# ========================================================
-# CONVERSACIÓN
-# ========================================================
-
-try:
-    async with message.channel.typing():
-        response = ask_openai(
-            channel_id,
-            content
+        await message.channel.send(
+            "Listo. He reiniciado el contexto de esta conversación. "
+            "Podemos comenzar nuevamente."
         )
+        return
 
-    await message.channel.send(response)
+    # ========================================================
+    # HELLO
+    # ========================================================
 
-# ========================================================
-# CUOTA / RATE LIMIT
-# ========================================================
+    if content.lower() == "$hello":
+        await message.channel.send(
+            "¡Hola! 👋 Soy PropiA, tu asistente de inversión inmobiliaria "
+            "en Chile. ¿En qué te puedo ayudar?"
+        )
+        return
 
-except RateLimitError as error:
-    print(f"⚠️ Rate limit / cuota de OpenAI: {error}")
-    await message.channel.send(ERROR_MESSAGE)
+    # ========================================================
+    # CONVERSACIÓN
+    # ========================================================
 
-# ========================================================
-# API KEY INCORRECTA
-# ========================================================
+    try:
+        async with message.channel.typing():
+            response = ask_openai(
+                channel_id,
+                content
+            )
 
-except AuthenticationError as error:
-    print(f"🔑 Error de autenticación de OpenAI: {error}")
-    await message.channel.send(ERROR_MESSAGE)
+        await message.channel.send(response)
 
-# ========================================================
-# OTROS ERRORES DE LA API
-# ========================================================
+    # ========================================================
+    # CUOTA / RATE LIMIT
+    # ========================================================
 
-except APIStatusError as error:
-    print(
-        f"⚠️ Error de OpenAI "
-        f"(status {error.status_code}): {error}"
-    )
-    await message.channel.send(ERROR_MESSAGE)
+    except RateLimitError as error:
+        print(f"⚠️ Rate limit / cuota de OpenAI: {error}")
+        await message.channel.send(ERROR_MESSAGE)
 
-# ========================================================
-# ERROR GENERAL
-# ========================================================
+    # ========================================================
+    # API KEY INCORRECTA
+    # ========================================================
 
-except Exception as error:
-    print(f"❌ Error inesperado: {error}")
-    await message.channel.send(ERROR_MESSAGE)
+    except AuthenticationError as error:
+        print(f"🔑 Error de autenticación de OpenAI: {error}")
+        await message.channel.send(ERROR_MESSAGE)
 
+    # ========================================================
+    # OTROS ERRORES DE LA API
+    # ========================================================
+
+    except APIStatusError as error:
+        print(
+            f"⚠️ Error de OpenAI "
+            f"(status {error.status_code}): {error}"
+        )
+        await message.channel.send(ERROR_MESSAGE)
+
+    # ========================================================
+    # ERROR GENERAL
+    # ========================================================
+
+    except Exception as error:
+        print(f"❌ Error inesperado: {error}")
+        await message.channel.send(ERROR_MESSAGE)
 
 # ============================================================
 # INICIAR
