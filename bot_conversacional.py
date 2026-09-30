@@ -261,24 +261,24 @@ async def on_message(message):
     # ========================================================
 
     if content.lower() == "$reset":
-    reset_history(channel_id)
-
-    await message.channel.send(
-        "Listo. He reiniciado el contexto de esta conversación. "
-        "Podemos comenzar nuevamente."
-    )
-    return
+        reset_history(channel_id)
+    
+        await message.channel.send(
+            "Listo. He reiniciado el contexto de esta conversación. "
+            "Podemos comenzar nuevamente."
+        )
+        return
 
     # ========================================================
     # HELLO
     # ========================================================
 
     if content.lower() == "$hello":
-    await message.channel.send(
-        "¡Hola! 👋 Soy PropiA, tu asistente de inversión inmobiliaria "
-        "en Chile. ¿En qué te puedo ayudar?"
-    )
-    return
+        await message.channel.send(
+            "¡Hola! 👋 Soy PropiA, tu asistente de inversión inmobiliaria "
+            "en Chile. ¿En qué te puedo ayudar?"
+        )
+        return
 
     # ========================================================
     # CONVERSACIÓN
